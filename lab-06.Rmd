@@ -1,7 +1,7 @@
 ---
 title: "Lab 06 - Ugly charts and Simpson's paradox"
-author: "Insert your name here"
-date: "Insert date here"
+author: "Tiffani J. Hill"
+date: "February 18, 2025"
 output: github_document
 ---
 
@@ -11,24 +11,80 @@ output: github_document
 library(tidyverse) 
 library(dsbox)
 library(mosaicData) 
+library(countrycode)
+```
+```{r housekeeping}
+library(usethis)
+use_git_config(
+  user.name = "Tiffani Hill",
+  user.email = "hillt24@wfu.edu"
+)
 ```
 
+```{r loading-data}
+staff <- read_csv("data/instructional-staff.csv")
+```
+There should be 55 rows of data.
+```{r converting-data-long}
+staff_long <- staff %>% 
+  pivot_longer(cols = -faculty_type, names_to = "year") %>% 
+  mutate(value = as.numeric(value))
+```
+```{r creating-line-plot}
+staff_long %>% 
+  ggplot(aes(x = year, 
+             y = value, 
+             color = faculty_type)) +
+  geom_line()
+```
+```{r grouping-for-aes}
+staff_long %>% 
+  ggplot(aes(
+    x = year,
+    y = value,
+    group = faculty_type,
+    color = faculty_type 
+  )) +
+  geom_line() +
+  labs(
+    title = "Instructional Staff Employees between 1975 and 2011",
+    x = "Year",
+    y = "Number of Employees",
+   color = "Faculty"
+    
+    
+  )
+```
 ### Exercise 1
+I think this graph is pretty sufficient, however, I would change the colors so that all full time employees are one color. 
 
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
 
 ### Exercise 2
+```{r load-data-fisheries}
+fisheries <- read_csv("data/fisheries.csv")
 
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
-
+```
 ### Exercise 3
+At the very least, we need to make it so that other countries data is visible because we can only see two colors. This is very hard considering that there are so many countries included. I decided to create a variable for continent and use the continents on the x axis instead of the country. An alternative would also be to make separate graphs with subsets of the data. Note: I wasn't sure how to delete the NA column.
+```{r fisheries-visualizations, message =FALSE}
+fisheries <- fisheries %>% 
+  mutate(continent = countrycode(country,
+                                  origin = "country.name",
+                                  destination = "continent"))
 
-...
+fisheries %>% 
+  group_by(continent) %>% 
+  ggplot(aes(x = continent, y = total))+
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Tonnage of Fish Captured and Farmed by Continent",
+    x = "Continent",
+    y = "Total"
+  )
+  theme_minimal()
+
+
+```
 
 Add exercise headings as needed.
