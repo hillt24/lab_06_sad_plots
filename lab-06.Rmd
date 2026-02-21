@@ -88,3 +88,21 @@ fisheries %>%
 ```
 
 Add exercise headings as needed.
+##Stretch Goals
+I really wanted to do the stretch goals but the performance package won't load. 
+
+```{r load-data-packages}
+library(tidyverse)
+library(mosaicData)
+```
+
+```{r mosaicData}
+data("Whickham")
+```
+
+```{r peek-codebook, eval=FALSE}
+?Whickham
+library(performance)
+performance::compare_performance() # might not be behaving as intented.
+```
+

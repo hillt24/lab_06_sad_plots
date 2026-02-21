@@ -505,4 +505,20 @@ fisheries %>%
     ##  @ complete: logi TRUE
     ##  @ validate: logi TRUE
 
-Add exercise headings as needed.
+Add exercise headings as needed. \##Stretch Goals I really wanted to do
+the stretch goals but the performance package won’t load.
+
+``` r
+library(tidyverse)
+library(mosaicData)
+```
+
+``` r
+data("Whickham")
+```
+
+``` r
+?Whickham
+library(performance)
+performance::compare_performance() # might not be behaving as intented.
+```
